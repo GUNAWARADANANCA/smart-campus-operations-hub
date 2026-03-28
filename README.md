@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Campus Operations Hub (Monorepo)
 
-## Getting Started
+Production-oriented monorepo for campus operations: **Next.js** frontend and **Spring Boot 3** backend, orchestrated with **Turborepo**.
 
-First, run the development server:
+## Layout
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+apps/
+  frontend/    Next.js (App Router), Tailwind CSS — http://localhost:3000
+  backend/     Spring Boot 3, Java 17, MySQL — http://localhost:8080
+packages/      Reserved for shared libraries (e.g. types)
+turbo.json
+package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend calls the REST API at `http://localhost:8080/api` (override with `NEXT_PUBLIC_API_URL` in `apps/frontend/.env.local`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 20+ and [pnpm](https://pnpm.io/)
+- Java 17+ and Maven 3.9+
+- MySQL 8+ (create database `smart_campus` or let Hibernate create it per `application.yml`)
 
-## Learn More
+## Database
 
-To learn more about Next.js, take a look at the following resources:
+1. Create a MySQL user and database, or use the defaults in `apps/backend/src/main/resources/application.yml`.
+2. Adjust `spring.datasource.*` for your environment.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Sample data loads on startup when the database is empty.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Run everything (Turborepo)
 
-## Deploy on Vercel
+From the repository root:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm install
+npx turbo run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This starts the frontend dev server and Spring Boot concurrently.
+
+## Run apps individually
+
+**Frontend**
+
+```bash
+cd apps/frontend
+cp .env.local.example .env.local
+pnpm dev
+```
+
+**Backend**
+
+From the **repository root** (works on Windows PowerShell too):
+
+```bash
+pnpm dev:backend
+```
+
+Or from `apps/backend`:
+
+```bash
+cd apps/backend
+node run-mvnw.cjs spring-boot:run
+```
+
+On **Windows PowerShell**, use `.\mvnw.cmd spring-boot:run` inside `apps/backend` — not `./mvnw` from the repo root (the wrapper only lives under `apps/backend`, and `./mvnw` is a Unix/Git Bash habit).
+
+No global Maven install required: the repo ships the Maven Wrapper (`mvnw` / `mvnw.cmd`) in `apps/backend`.
+
+You must have **Java 17+** installed. The wrapper expects **`JAVA_HOME`** to point at your JDK (e.g. `C:\Program Files\Java\jdk-17`). If you see *JAVA_HOME not found*, set it in System Environment Variables or in your shell, then open a new terminal.
+
+To confirm: from `apps/backend`, run `node run-mvnw.cjs -v` (should print Apache Maven version).
+
+## Other scripts
+
+| Scope   | Build        | Lint        |
+|---------|--------------|------------|
+| Root    | `pnpm build` | `pnpm lint` |
+| Frontend| `pnpm --filter frontend build` | `pnpm --filter frontend lint` |
+| Backend | `node apps/backend/run-mvnw.cjs -B package -DskipTests` | `node apps/backend/run-mvnw.cjs -B -q compile` |
+
+## Authentication (development)
+
+The API uses Spring Security. For local development, authenticate requests by sending the logged-in user’s email:
+
+`X-Dev-User-Email: <user-email>`
+
+After `POST /api/auth/login`, the frontend stores the user and sends this header on each request. This keeps the stack working before OAuth2 (e.g. Google) is wired in.
+
+## API overview
+
+| Resource      | Base path              |
+|---------------|------------------------|
+| Auth          | `/api/auth/login`, `/api/auth/register` |
+| Users         | `/api/users`           |
+| Resources     | `/api/resources`       |
+| Bookings      | `/api/bookings`        |
+| Tickets       | `/api/tickets`         |
+| Notifications | `/api/notifications`   |
+
+Use standard REST verbs: `GET`, `POST`, `PUT`, `PATCH`, `DELETE` where exposed by controllers.
+
+## License
+
+Private / academic use per your institution’s policy.
