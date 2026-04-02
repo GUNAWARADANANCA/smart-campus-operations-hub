@@ -1,0 +1,9 @@
+{
+  "name": "backend",
+  "private": true,
+  "scripts": {
+    "dev": "node run-mvnw.cjs spring-boot:run",
+    "build": "node run-mvnw.cjs -B package -DskipTests",
+    "lint": "node lint.cjs"
+  }
+}
