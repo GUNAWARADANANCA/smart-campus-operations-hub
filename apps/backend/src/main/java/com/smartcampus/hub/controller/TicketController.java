@@ -30,7 +30,7 @@ public class TicketController {
   }
 
   @GetMapping("/{id}")
-  public TicketDto get(@PathVariable Long id) {
+  public TicketDto get(@PathVariable String id) {
     return ticketService.findById(id);
   }
 
@@ -40,18 +40,18 @@ public class TicketController {
   }
 
   @PatchMapping("/{id}/advance")
-  public TicketDto advance(@PathVariable Long id) {
+  public TicketDto advance(@PathVariable String id) {
     return ticketService.advance(id);
   }
 
   @PutMapping("/{id}/status")
   public TicketDto updateStatus(
-      @PathVariable Long id, @Valid @RequestBody TicketStatusUpdateRequest body) {
+      @PathVariable String id, @Valid @RequestBody TicketStatusUpdateRequest body) {
     return ticketService.updateStatus(id, body);
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Long id) {
+  public void delete(@PathVariable String id) {
     ticketService.delete(id);
   }
 }

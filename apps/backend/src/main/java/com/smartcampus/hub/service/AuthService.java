@@ -4,7 +4,7 @@ import com.smartcampus.hub.dto.RegisterRequest;
 import com.smartcampus.hub.dto.UserDto;
 import com.smartcampus.hub.exception.BadRequestException;
 import com.smartcampus.hub.exception.ResourceNotFoundException;
-import com.smartcampus.hub.model.UserEntity;
+import com.smartcampus.hub.model.User;
 import com.smartcampus.hub.model.UserRole;
 import com.smartcampus.hub.repository.UserRepository;
 import com.smartcampus.hub.service.support.DtoMapper;
@@ -19,7 +19,7 @@ public class AuthService {
   private final UserRepository userRepository;
 
   public UserDto login(String email, String ignoredPassword) {
-    UserEntity user =
+    User user =
         userRepository
             .findByEmailIgnoreCase(email.trim())
             .orElseThrow(() -> new ResourceNotFoundException("Unknown email"));
@@ -31,8 +31,8 @@ public class AuthService {
     if (userRepository.existsByEmailIgnoreCase(request.email().trim())) {
       throw new BadRequestException("Email already registered");
     }
-    UserEntity created =
-        UserEntity.builder()
+    User created =
+        User.builder()
             .name(request.name().trim())
             .email(request.email().trim().toLowerCase())
             .role(UserRole.USER)

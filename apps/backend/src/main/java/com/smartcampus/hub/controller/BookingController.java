@@ -29,7 +29,7 @@ public class BookingController {
   }
 
   @GetMapping("/{id}")
-  public BookingDto get(@PathVariable Long id) {
+  public BookingDto get(@PathVariable String id) {
     return bookingService.findById(id);
   }
 
@@ -40,12 +40,12 @@ public class BookingController {
 
   @PutMapping("/{id}/status")
   public BookingDto updateStatus(
-      @PathVariable Long id, @Valid @RequestBody BookingStatusUpdateRequest body) {
+      @PathVariable String id, @Valid @RequestBody BookingStatusUpdateRequest body) {
     return bookingService.updateStatus(id, body);
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Long id) {
+  public void delete(@PathVariable String id) {
     bookingService.delete(id);
   }
 }

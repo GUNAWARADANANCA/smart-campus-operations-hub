@@ -2,7 +2,7 @@ package com.smartcampus.hub.service;
 
 import com.smartcampus.hub.exception.BadRequestException;
 import com.smartcampus.hub.exception.ResourceNotFoundException;
-import com.smartcampus.hub.model.UserEntity;
+import com.smartcampus.hub.model.User;
 import com.smartcampus.hub.model.UserRole;
 import com.smartcampus.hub.repository.UserRepository;
 import java.util.Set;
@@ -19,7 +19,7 @@ public class CurrentUserService {
 
   private final UserRepository userRepository;
 
-  public UserEntity requireUser() {
+  public User requireUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     if (auth == null
         || !auth.isAuthenticated()

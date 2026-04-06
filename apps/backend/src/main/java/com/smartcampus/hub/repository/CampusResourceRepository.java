@@ -1,6 +1,7 @@
 package com.smartcampus.hub.repository;
 
-import com.smartcampus.hub.model.CampusResourceEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.smartcampus.hub.model.CampusResource;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CampusResourceRepository extends JpaRepository<CampusResourceEntity, Long> {}
+public interface CampusResourceRepository extends MongoRepository<CampusResource, String> {
+}

@@ -29,7 +29,7 @@ public class CampusResourceController {
   }
 
   @GetMapping("/{id}")
-  public ResourceDto get(@PathVariable Long id) {
+  public ResourceDto get(@PathVariable String id) {
     return campusResourceService.findById(id);
   }
 
@@ -39,12 +39,12 @@ public class CampusResourceController {
   }
 
   @PutMapping("/{id}")
-  public ResourceDto update(@PathVariable Long id, @Valid @RequestBody ResourceUpdateRequest body) {
+  public ResourceDto update(@PathVariable String id, @Valid @RequestBody ResourceUpdateRequest body) {
     return campusResourceService.update(id, body);
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable Long id) {
+  public void delete(@PathVariable String id) {
     campusResourceService.delete(id);
   }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record BookingCreateRequest(
-    @NotNull Long resourceId,
+    @NotNull String resourceId,
     @NotNull LocalDate date,
     @NotNull LocalTime startTime,
     @NotNull LocalTime endTime,

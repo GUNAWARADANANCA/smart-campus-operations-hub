@@ -1,8 +1,8 @@
 package com.smartcampus.hub.service;
 
-import com.smartcampus.hub.model.NotificationEntity;
+import com.smartcampus.hub.model.Notification;
 import com.smartcampus.hub.model.NotificationKind;
-import com.smartcampus.hub.model.UserEntity;
+import com.smartcampus.hub.model.User;
 import com.smartcampus.hub.repository.NotificationRepository;
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,11 @@ public class NotificationService {
   private final NotificationRepository notificationRepository;
 
   @Transactional
-  public void notifyUser(UserEntity user, String title, String message, NotificationKind kind) {
+  public void notifyUser(User user, String title, String message, NotificationKind kind) {
     notificationRepository.save(
-        NotificationEntity.builder()
-            .user(user)
+        Notification.builder()
+            .userId(user.getId())
+            .userName(user.getName())
             .title(title)
             .message(message)
             .kind(kind)

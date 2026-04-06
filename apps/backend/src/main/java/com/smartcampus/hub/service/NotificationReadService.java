@@ -19,7 +19,7 @@ public class NotificationReadService {
   @Transactional(readOnly = true)
   public List<NotificationDto> listMine() {
     var user = currentUserService.requireUser();
-    return notificationRepository.findByUserOrderByCreatedAtDesc(user).stream()
+    return notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId()).stream()
         .map(DtoMapper::toNotificationDto)
         .toList();
   }
@@ -27,19 +27,19 @@ public class NotificationReadService {
   @Transactional
   public void markAllRead() {
     var user = currentUserService.requireUser();
-    var notifications = notificationRepository.findByUserOrderByCreatedAtDesc(user);
+    var notifications = notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
     notifications.forEach(n -> n.setReadStatus(true));
     notificationRepository.saveAll(notifications);
   }
 
   @Transactional
-  public void markRead(Long id) {
+  public void markRead(String id) {
     var user = currentUserService.requireUser();
     var n =
         notificationRepository
             .findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Notification not found"));
-    if (!n.getUser().getId().equals(user.getId())) {
+    if (!n.getUserId().equals(user.getId())) {
       throw new ResourceNotFoundException("Notification not found");
     }
     n.setReadStatus(true);

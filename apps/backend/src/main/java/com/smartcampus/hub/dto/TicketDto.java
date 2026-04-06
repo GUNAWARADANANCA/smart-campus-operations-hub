@@ -10,4 +10,4 @@ public record TicketDto(
     String reportedBy,
     String assignedTo,
     int comments,
-    Long resourceId) {}
+    String resourceId) {}

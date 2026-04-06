@@ -6,7 +6,7 @@ import com.smartcampus.hub.dto.ResourceUpdateRequest;
 import com.smartcampus.hub.exception.ForbiddenException;
 import com.smartcampus.hub.exception.ResourceNotFoundException;
 import com.smartcampus.hub.model.UserRole;
-import com.smartcampus.hub.model.CampusResourceEntity;
+import com.smartcampus.hub.model.CampusResource;
 import com.smartcampus.hub.repository.CampusResourceRepository;
 import com.smartcampus.hub.service.support.DtoMapper;
 import java.util.List;
@@ -27,7 +27,7 @@ public class CampusResourceService {
   }
 
   @Transactional(readOnly = true)
-  public ResourceDto findById(Long id) {
+  public ResourceDto findById(String id) {
     return resourceRepository
         .findById(id)
         .map(DtoMapper::toResourceDto)
@@ -38,7 +38,7 @@ public class CampusResourceService {
   public ResourceDto create(ResourceCreateRequest req) {
     requireAdmin();
     var entity =
-        CampusResourceEntity.builder()
+        CampusResource.builder()
             .name(req.name())
             .type(req.type())
             .capacity(req.capacity())
@@ -49,7 +49,7 @@ public class CampusResourceService {
   }
 
   @Transactional
-  public ResourceDto update(Long id, ResourceUpdateRequest req) {
+  public ResourceDto update(String id, ResourceUpdateRequest req) {
     requireAdmin();
     var entity =
         resourceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
@@ -62,7 +62,7 @@ public class CampusResourceService {
   }
 
   @Transactional
-  public void delete(Long id) {
+  public void delete(String id) {
     requireAdmin();
     if (!resourceRepository.existsById(id)) {
       throw new ResourceNotFoundException("Resource not found");

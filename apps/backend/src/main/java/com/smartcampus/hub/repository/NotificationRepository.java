@@ -1,11 +1,10 @@
 package com.smartcampus.hub.repository;
 
-import com.smartcampus.hub.model.NotificationEntity;
-import com.smartcampus.hub.model.UserEntity;
+import com.smartcampus.hub.model.Notification;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
+public interface NotificationRepository extends MongoRepository<Notification, String> {
 
-  List<NotificationEntity> findByUserOrderByCreatedAtDesc(UserEntity user);
+    List<Notification> findByUserIdOrderByCreatedAtDesc(String userId);
 }

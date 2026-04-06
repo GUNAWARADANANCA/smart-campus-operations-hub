@@ -1,15 +1,15 @@
 package com.smartcampus.hub.repository;
 
-import com.smartcampus.hub.model.BookingEntity;
+import com.smartcampus.hub.model.Booking;
 import com.smartcampus.hub.model.BookingStatus;
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
+public interface BookingRepository extends MongoRepository<Booking, String> {
 
-  List<BookingEntity> findByResourceIdAndDateAndStatusIn(
-      Long resourceId, LocalDate date, List<BookingStatus> statuses);
+  List<Booking> findByResourceIdAndDateAndStatusIn(
+      String resourceId, LocalDate date, List<BookingStatus> statuses);
 
-  List<BookingEntity> findAllByOrderByDateDescStartTimeDesc();
+  List<Booking> findAllByOrderByDateDescStartTimeDesc();
 }

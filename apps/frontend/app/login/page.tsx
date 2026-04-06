@@ -78,7 +78,7 @@ export default function LoginPage() {
           ) : null}
 
           {!showRegister ? (
-            <form onSubmit={onSignIn}>
+            <form onSubmit={onSignIn} suppressHydrationWarning>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -122,7 +122,7 @@ export default function LoginPage() {
               </div>
             </form>
           ) : (
-            <form onSubmit={onRegister}>
+            <form onSubmit={onRegister} suppressHydrationWarning>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">

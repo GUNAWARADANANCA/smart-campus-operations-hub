@@ -4,8 +4,8 @@ import com.smartcampus.hub.dto.ManagementUserDto;
 import com.smartcampus.hub.dto.UserRoleUpdateRequest;
 import com.smartcampus.hub.exception.ForbiddenException;
 import com.smartcampus.hub.exception.ResourceNotFoundException;
-import com.smartcampus.hub.model.UserRole;
 import com.smartcampus.hub.model.NotificationKind;
+import com.smartcampus.hub.model.UserRole;
 import com.smartcampus.hub.repository.UserRepository;
 import com.smartcampus.hub.service.support.DtoMapper;
 import java.util.Comparator;
@@ -27,22 +27,27 @@ public class UserAdminService {
     requireAdmin();
     return userRepository.findAll().stream()
         .map(DtoMapper::toManagementUser)
-        .sorted(Comparator.comparingLong(a -> Long.parseLong(a.id())))
+        .sorted(Comparator.comparingLong(dto -> Long.parseLong(dto.id())))
         .toList();
   }
 
   @Transactional
-  public ManagementUserDto updateRole(Long userId, UserRoleUpdateRequest body) {
+  public ManagementUserDto updateRole(String userId, UserRoleUpdateRequest body) {
     requireAdmin();
-    var user =
-        userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+    var user = userRepository.findById(userId)
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
     user.setRole(body.role());
     userRepository.save(user);
+
     notificationService.notifyUser(
         user,
         "Role Updated",
         "Your campus role was changed to " + body.role().name() + ".",
-        NotificationKind.INFO);
+        NotificationKind.INFO
+    );
+
     return DtoMapper.toManagementUser(user);
   }
 

@@ -27,7 +27,8 @@ public class UserController {
 
   @PutMapping("/{id}/role")
   public ManagementUserDto updateRole(
-      @PathVariable Long id, @Valid @RequestBody UserRoleUpdateRequest body) {
+      @PathVariable String id,
+      @Valid @RequestBody UserRoleUpdateRequest body) {
     return userAdminService.updateRole(id, body);
   }
 }
