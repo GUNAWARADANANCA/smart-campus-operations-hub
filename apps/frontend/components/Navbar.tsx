@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Menu, Search } from "lucide-react";
+import { Bell, Menu, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useApp } from "@/context/AppContext";
 import { NotificationPanel } from "@/components/NotificationPanel";
@@ -20,11 +20,16 @@ const userNavItems = [
 ];
 
 export function Navbar({ onMenuClick }: NavbarProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { notifications, markAllNotificationsRead } = useApp();
-  const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
+
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const notifRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
   const pathname = usePathname();
 
   const unread = notifications.filter((n) => !n.read).length;
@@ -34,14 +39,17 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
       const t = e.target as Node;
-      if (!open) return;
-      if (wrapRef.current?.contains(t)) return;
-      setOpen(false);
+
+      if (notifRef.current?.contains(t)) return;
+      if (profileRef.current?.contains(t)) return;
+
+      setNotifOpen(false);
+      setProfileOpen(false);
     }
 
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
-  }, [open]);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/40 bg-white/75 backdrop-blur-xl shadow-sm">
@@ -97,12 +105,15 @@ export function Navbar({ onMenuClick }: NavbarProps) {
 
         {/* RIGHT */}
         <div className="flex items-center gap-3">
-          <div className="relative" ref={wrapRef}>
+          <div className="relative" ref={notifRef}>
             <button
               type="button"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => {
+                setNotifOpen((v) => !v);
+                setProfileOpen(false);
+              }}
               className="relative rounded-2xl bg-cyan-50 p-3 text-cyan-600 transition hover:bg-cyan-200/70"
-              aria-expanded={open}
+              aria-expanded={notifOpen}
               aria-haspopup="true"
             >
               <Bell className="h-5 w-5" />
@@ -114,21 +125,43 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             </button>
 
             <NotificationPanel
-              open={open}
+              open={notifOpen}
               panelRef={panelRef}
               notifications={notifications}
               onMarkAllRead={markAllNotificationsRead}
             />
           </div>
 
-          <div className="flex items-center gap-3 rounded-2xl bg-[#f4f7fb] px-3 py-2 shadow-sm">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-100 to-cyan-200 font-bold text-cyan-700">
-              {initial}
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-slate-900">{user?.name}</p>
-              <p className="text-xs uppercase text-slate-400">{user?.role}</p>
-            </div>
+          <div className="relative" ref={profileRef}>
+            <button
+              type="button"
+              onClick={() => {
+                setProfileOpen((v) => !v);
+                setNotifOpen(false);
+              }}
+              className="flex items-center gap-3 rounded-2xl bg-[#f4f7fb] px-3 py-2 shadow-sm"
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-100 to-cyan-200 font-bold text-cyan-700">
+                {initial}
+              </div>
+
+              <div className="hidden sm:block text-left">
+                <p className="text-sm font-semibold text-slate-900">{user?.name}</p>
+                <p className="text-xs uppercase text-slate-400">{user?.role}</p>
+              </div>
+            </button>
+
+            {profileOpen && (
+              <div className="absolute right-0 mt-2 w-40 rounded-xl bg-white shadow-lg ring-1 ring-slate-200 z-50">
+                <button
+                  onClick={logout}
+                  className="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-red-500 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

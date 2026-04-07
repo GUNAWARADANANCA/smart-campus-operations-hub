@@ -3,10 +3,12 @@
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Building2, ShieldCheck, ArrowRightLeft, GraduationCap } from "lucide-react";
 
 export default function LoginPage() {
   const { user, isReady, login, register } = useAuth();
   const router = useRouter();
+
   const [showRegister, setShowRegister] = useState(false);
   const [email, setEmail] = useState("admin@smartcampus.edu");
   const [password, setPassword] = useState("password123");
@@ -44,147 +46,214 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 flex items-center justify-center px-4">
-      <div className="w-full max-w-md animate-fade-in">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-              <svg
-                className="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                />
-              </svg>
+    <div className="min-h-screen bg-gradient-to-br from-primary-100 via-white to-primary-300">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
+        {/* LEFT SIDE */}
+        <div className="relative hidden overflow-hidden lg:flex">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(39,131,166,0.22),transparent_35%)]" />
+          <div className="absolute right-16 top-16 h-40 w-40 rounded-full bg-primary-300/40 blur-3xl" />
+          <div className="absolute bottom-16 left-16 h-52 w-52 rounded-full bg-primary-400/30 blur-3xl" />
+
+          <div className="relative z-10 flex w-full flex-col justify-between px-12 py-10">
+            <div className="flex items-center gap-3">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-700 to-cyan-500 text-white shadow-lg">
+                <Building2 className="h-7 w-7" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900">Smart Campus Hub</h1>
+                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-700">
+                  Smart Campus Experience
+                </p>              
+              </div>
             </div>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 text-center mb-1">
-            Smart Campus Hub
-          </h1>
-          <p className="text-center text-gray-500 mb-8 text-sm">
-            Campus Operations Management System
-          </p>
 
-          {error ? (
-            <p className="mb-4 text-sm text-red-600 text-center" role="alert">
-              {error}
+            <div className="max-w-xl">
+              <h2 className="text-5xl font-bold leading-tight text-slate-900">
+                Manage campus services with one clean platform.
+              </h2>
+
+              <div className="mt-5 grid grid-cols-2 gap-4">
+                <div className="rounded-3xl bg-white/70 p-5 shadow-sm ring-1 ring-white/60 backdrop-blur">
+                  <ShieldCheck className="h-6 w-6 text-cyan-700" />
+                  <h3 className="mt-3 text-sm font-semibold text-slate-900">Secure Access</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Safe login and protected operations.
+                  </p>
+                </div>
+
+                <div className="rounded-3xl bg-white/70 p-5 shadow-sm ring-1 ring-white/60 backdrop-blur">
+                  <ArrowRightLeft className="h-6 w-6 text-cyan-700" />
+                  <h3 className="mt-3 text-sm font-semibold text-slate-900">Fast Workflow</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Smooth student and admin interactions.
+                  </p>
+                </div>
+
+                <div className="rounded-3xl bg-white/70 p-5 shadow-sm ring-1 ring-white/60 backdrop-blur">
+                  <GraduationCap className="h-6 w-6 text-cyan-700" />
+                  <h3 className="mt-3 text-sm font-semibold text-slate-900">Student Focused</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Built for daily campus needs and support.
+                  </p>
+                </div>
+
+                <div className="rounded-3xl bg-white/70 p-5 shadow-sm ring-1 ring-white/60 backdrop-blur">
+                  <Building2 className="h-6 w-6 text-cyan-700" />
+                  <h3 className="mt-3 text-sm font-semibold text-slate-900">Resource Ready</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Access bookings, tickets, and campus tools.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm text-slate-400 mt-5">
+              © 2026 Smart Campus Operations. All rights reserved.
             </p>
-          ) : null}
-
-          {!showRegister ? (
-            <form onSubmit={onSignIn} suppressHydrationWarning>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2.5 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg text-sm"
-                >
-                  Sign In
-                </button>
-              </div>
-              <div className="mt-5 text-center">
-                <button
-                  type="button"
-                  onClick={() => setShowRegister(true)}
-                  className="text-sm text-blue-600 hover:text-blue-800 transition"
-                >
-                  Don&apos;t have an account? Register
-                </button>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={onRegister} suppressHydrationWarning>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter your full name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={regEmail}
-                    onChange={(e) => setRegEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Min 6 characters"
-                    value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    minLength={6}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2.5 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 shadow-md text-sm"
-                >
-                  Create Account
-                </button>
-              </div>
-              <div className="mt-5 text-center">
-                <button
-                  type="button"
-                  onClick={() => setShowRegister(false)}
-                  className="text-sm text-blue-600 hover:text-blue-800 transition"
-                >
-                  Already have an account? Sign in
-                </button>
-              </div>
-            </form>
-          )}
+          </div>
         </div>
-        <p className="mt-6 text-center text-blue-200 text-xs">
-          &copy; 2026 Smart Campus Operations. All rights reserved.
-        </p>
+
+        {/* RIGHT SIDE */}
+        <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
+          <div className="w-full max-w-md">
+            <div className="rounded-[32px] bg-white p-8 shadow-2xl ring-1 ring-cyan-100 sm:p-10">
+              <div className="mb-8 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-700 text-white shadow-lg">
+                  <Building2 className="h-8 w-8" />
+                </div>
+
+                <h2 className="mt-5 text-3xl font-bold text-slate-900">
+                  {!showRegister ? "Welcome Back" : "Create Account"}
+                </h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  {!showRegister
+                    ? "Sign in to continue to Smart Campus Hub"
+                    : "Create your account to get started"}
+                </p>
+              </div>
+
+              {error ? (
+                <div className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600">
+                  {error}
+                </div>
+              ) : null}
+
+              {!showRegister ? (
+                <form onSubmit={onSignIn} className="space-y-4" suppressHydrationWarning>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                      placeholder="Enter your password"
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="mt-2 w-full rounded-2xl bg-cyan-700 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-cyan-500"
+                  >
+                    Sign In
+                  </button>
+
+                  <div className="pt-2 text-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowRegister(true)}
+                      className="text-sm font-medium text-gray-700 transition hover:text-cyan-500"
+                    >
+                      Don&apos;t have an account? Register
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={onRegister} className="space-y-4" suppressHydrationWarning>
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-700">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Minimum 6 characters"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                      minLength={6}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="mt-2 w-full rounded-2xl bg-cyan-700 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-cyan-500"
+                  >
+                    Create Account
+                  </button>
+
+                  <div className="pt-2 text-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowRegister(false)}
+                      className="text-sm font-medium text-gray-700 transition hover:text-cyan-500"
+                    >
+                      Already have an account? Sign in
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+
+            <p className="mt-6 text-center text-xs text-slate-400 lg:hidden">
+              © 2026 Smart Campus Operations. All rights reserved.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
