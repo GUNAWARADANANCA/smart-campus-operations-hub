@@ -55,7 +55,7 @@ export default function ResourcesPage() {
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition shadow-sm shrink-0"
+          className="px-4 py-2 bg-cyan-700 text-white rounded-lg text-sm font-medium hover:bg-cyan-500 transition shadow-sm shrink-0"
         >
           + Add Resource
         </button>
@@ -67,14 +67,14 @@ export default function ResourcesPage() {
           placeholder="Search resources..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
+          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full sm:w-64"
         />
         <select
           value={typeFilter}
           onChange={(e) =>
             setTypeFilter(e.target.value as (typeof ALL_TYPES)[number])
           }
-          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="px-4 py-2 border border-gray-300 rounded-lg text-cyan-600 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
         >
           {ALL_TYPES.map((t) => (
             <option key={t}>{t}</option>
@@ -85,7 +85,7 @@ export default function ResourcesPage() {
           onChange={(e) =>
             setStatusFilter(e.target.value as StatusFilter)
           }
-          className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="px-4 py-2 border border-gray-300 rounded-lg text-cyan-600 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white"
         >
           {ALL_STATUS.map((s) => (
             <option key={s} value={s}>

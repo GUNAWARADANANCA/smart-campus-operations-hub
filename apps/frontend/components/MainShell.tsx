@@ -17,19 +17,33 @@ export function MainShell({ children }: { children: ReactNode }) {
   }, [user, isReady, router]);
 
   if (!isReady || !user) {
-    return <div className="min-h-screen bg-gray-50" aria-hidden />;
+    return <div className="min-h-screen bg-primary-50" aria-hidden />;
   }
 
+  const isAdmin = user.role === "ADMIN";
+
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
+    <div className="min-h-screen bg-[#f4f7fb] text-primary-800">
       <Navbar onMenuClick={() => setMobileMenuOpen((v) => !v)} />
-      <Sidebar
-        open={mobileMenuOpen}
-        onNavigate={() => setMobileMenuOpen(false)}
-      />
-      <main className="lg:ml-60 pt-16 min-h-screen">
-        <div className="p-6 animate-fade-in">{children}</div>
-      </main>
+
+      {isAdmin ? (
+        <>
+          <Sidebar
+            open={mobileMenuOpen}
+            onNavigate={() => setMobileMenuOpen(false)}
+          />
+
+          <main className="pt-20 lg:ml-[260px] min-h-screen">
+            <div className="p-4 md:p-6 animate-fade-in">{children}</div>
+          </main>
+        </>
+      ) : (
+        <main className="pt-20 min-h-screen">
+          <div className="max-w-full mx-auto p-4 md:p-6 animate-fade-in">
+            {children}
+          </div>
+        </main>
+      )}
     </div>
   );
 }

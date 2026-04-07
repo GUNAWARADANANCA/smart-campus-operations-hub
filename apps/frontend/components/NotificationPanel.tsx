@@ -80,11 +80,11 @@ export function NotificationPanel({
       className="absolute top-14 right-4 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50"
     >
       <div className="p-3 border-b border-gray-100 flex justify-between items-center">
-        <h3 className="font-semibold text-sm">Notifications</h3>
+        <h3 className="font-semibold text-sm text-cyan-700">Notifications</h3>
         <button
           type="button"
           onClick={onMarkAllRead}
-          className="text-xs text-blue-600 hover:text-blue-800"
+          className="text-xs text-cyan-500 hover:text-cyan-700"
         >
           Mark all as read
         </button>

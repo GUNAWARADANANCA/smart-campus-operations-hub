@@ -3,22 +3,25 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { motion } from "framer-motion";
+import {
+  LayoutDashboard,
+  BookOpen,
+  CalendarDays,
+  Ticket,
+  Users,
+  LogOut,
+  Sparkles,
+} from "lucide-react";
 
-const linkBase =
-  "sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition";
+const navItems = [
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Resources", href: "/resources", icon: BookOpen },
+  { label: "Bookings", href: "/bookings", icon: CalendarDays },
+  { label: "Tickets", href: "/tickets", icon: Ticket },
+];
 
-function activeClass(active: boolean) {
-  return active
-    ? "bg-blue-50 text-blue-700 border-r-[3px] border-blue-600"
-    : "text-gray-600";
-}
-
-type SidebarProps = {
-  open: boolean;
-  onNavigate?: () => void;
-};
-
-export function Sidebar({ open, onNavigate }: SidebarProps) {
+export function Sidebar({ open, onNavigate }: any) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
@@ -33,143 +36,98 @@ export function Sidebar({ open, onNavigate }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed left-0 top-16 bottom-0 w-60 bg-white border-r border-gray-200 z-40 transform transition-transform duration-200 ${mobileTranslate} lg:translate-x-0`}
+      className={`fixed left-0 top-20 bottom-0 w-[260px] bg-white border-r border-primary-200 z-40 transform transition-transform duration-200 ${mobileTranslate} lg:translate-x-0`}
     >
-      <nav className="p-3 space-y-1 relative h-full">
-        <Link
-          href="/dashboard"
-          className={`${linkBase} ${activeClass(pathname === "/dashboard")}`}
-          onClick={onNavigate}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-            />
-          </svg>
-          Dashboard
-        </Link>
-        <Link
-          href="/resources"
-          className={`${linkBase} ${activeClass(pathname === "/resources")}`}
-          onClick={onNavigate}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-            />
-          </svg>
-          Resources
-        </Link>
-        <Link
-          href="/bookings"
-          className={`${linkBase} ${activeClass(pathname === "/bookings")}`}
-          onClick={onNavigate}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          Bookings
-        </Link>
-        <Link
-          href="/tickets"
-          className={`${linkBase} ${activeClass(pathname === "/tickets")}`}
-          onClick={onNavigate}
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Tickets
-        </Link>
+      <div className="flex flex-col h-full p-4">
+        {/* HERO CARD */}
+        <div className="mt-2 rounded-3xl bg-gradient-to-br from-primary-600 to-indigo-600 text-white p-4 shadow-md">
+          <Sparkles className="w-5 h-5" />
+          <h3 className="mt-3 text-sm font-semibold">
+            Smart Experience
+          </h3>
+          <p className="mt-1 text-xs text-primary-100 leading-5">
+            Book resources, track tickets and manage your campus life easily.
+          </p>
+        </div>
 
-        {isAdmin ? (
-          <>
-            <div className="pt-3 pb-1">
-              <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        {/* NAV LINKS */}
+        <nav className="mt-6 flex-1 space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = pathname === item.href;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onNavigate}
+                className={`relative flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition ${
+                  active
+                    ? "text-primary-700"
+                    : "text-primary-600 hover:bg-primary-50 hover:text-primary-900"
+                }`}
+              >
+                {active && (
+                  <motion.div
+                    layoutId="activeSidebar"
+                    className="absolute inset-0 bg-primary-50 rounded-xl"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+
+                <Icon className="w-5 h-5 relative z-10" />
+                <span className="relative z-10">{item.label}</span>
+              </Link>
+            );
+          })}
+
+          {/* ADMIN SECTION */}
+          {isAdmin && (
+            <>
+              <p className="px-3 pt-4 text-xs text-primary-400 uppercase">
                 Admin
               </p>
-            </div>
-            <Link
-              href="/users"
-              className={`${linkBase} ${activeClass(pathname === "/users")}`}
-              onClick={onNavigate}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                />
-              </svg>
-              Users
-            </Link>
-          </>
-        ) : null}
 
-        <div className="absolute bottom-4 left-3 right-3">
+              <Link
+                href="/users"
+                className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition ${
+                  pathname === "/users"
+                    ? "bg-primary-50 text-primary-700"
+                    : "text-primary-600 hover:bg-primary-50"
+                }`}
+              >
+                <Users className="w-5 h-5" />
+                Users
+              </Link>
+            </>
+          )}
+        </nav>
+
+        {/* PROFILE + LOGOUT */}
+        <div className="mt-auto">
+          <div className="flex items-center gap-3 bg-primary-50 p-3 rounded-xl">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-indigo-200 flex items-center justify-center text-primary-700 font-bold">
+              {user?.name?.charAt(0) ?? "U"}
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-primary-900">
+                {user?.name}
+              </p>
+              <p className="text-xs text-primary-400">
+                {user?.role}
+              </p>
+            </div>
+          </div>
+
           <button
-            type="button"
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition"
+            className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
+            <LogOut className="w-4 h-4" />
             Logout
           </button>
         </div>
-      </nav>
+      </div>
     </aside>
   );
 }
